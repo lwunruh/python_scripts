@@ -1,3 +1,6 @@
+#When run, sets the current day's Astronomy Picture of the Day
+#as the desktop background, and creates a popup with the explanation.
+
 import requests
 import ctypes
 from datetime import date
