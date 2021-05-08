@@ -2,6 +2,7 @@ from datetime import datetime as dt
 import webbrowser as w
 import pymsgbox as msg
 import pyautogui as gui
+import json
 import os
 import sys
 
@@ -28,23 +29,36 @@ class Meeting:
 # def initZoom(username, pasword):
 #     os.system("Zoom")
 
+def parse_to_courselist(path, courselist):
+    '''Takes path to json file, returns list of Meeting objects'''
+    newlist = []
+
+    with open(path) as f:
+        for obj in f:
+            courselist.append(json.loads(obj))
+    
+    for obj in courselist:
+        newlist.append(Meeting(obj["name"], set(obj["days"]), obj["time"], obj["link"]))
+    
+    return newlist
+
+def weekend_handler():
+    '''Creates a weekend alert box'''
+    msg.alert(text="It's the weekend, no classes!", title="You Fool!")
+    sys.exit(0)
 
 
-courselist = [
-    Meeting("SENG 275", {1,2,4}, 830, "https://uvic.zoom.us/j/83695982031?pwd=MWRwNHlIUXcwZjVMdUw0ZGVrc3hZdz09"),
-    Meeting("CSC 225", {1,2,4}, 930, "https://uvic.zoom.us/j/87826506066"),
-    Meeting("ECE 260", {1,2,4}, 1030, "https://bright.uvic.ca/d2l/home"),
-    Meeting("CSC 225 Lab", {1}, 1230, "https://bright.uvic.ca/d2l/home"),
-    Meeting("ECE 260 Tutorial", {0}, 1330, "https://uvic.zoom.us/j/82957527555?pwd=dm5jQkRUeTVmNW1aVWlGbEI1SXF0dz09"),
-    Meeting("SENG 310", {1,4}, 1430, "https://bright.uvic.ca/d2l/home"),
-    Meeting("SENG 310 Lab", {1,3}, 1700, "https://bright.uvic.ca/d2l/home"),
-    Meeting("SENG 275 Lab", {2}, 1430, "https://bright.uvic.ca/d2l/home")
-]
+#Get course data from json file
+courselist=[]
+courselist = parse_to_courselist("C:\\Users\lukeu\\Desktop\\Coding\\python_scripts\\auto_join_zoom\\courselist.json", courselist)
 
 
 #Find current weekday and time
-curr_day = dt.now().weekday()
+curr_day = dt.now().weekday() 
 curr_time = dt.now().strftime("%H%M")
+
+#Check if it's the weekend
+if curr_day in (5,6): weekend_handler()
 
 #Find meeting on the current day, and calculate the nearest one
 possible_courses = []
