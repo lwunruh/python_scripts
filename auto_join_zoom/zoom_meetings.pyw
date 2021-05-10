@@ -16,6 +16,7 @@ class Meeting:
     
     def join_meeting(self):
         '''Opens instance link in browser'''
+        #initZoom('a','b')
         w.open(self.link)
     
     def get_timediff(self, current):
@@ -26,8 +27,19 @@ class Meeting:
         '''Takes int timediff, sets value of timediff instance attribute'''
         self.timediff = timediff
 
-# def initZoom(username, pasword):
-#     os.system("Zoom")
+
+# def initZoom(username, password):
+#     '''Launch Zoom application and login using UVic SSO'''
+#     os.system("C:\\Users\\lukeu\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe")
+
+#     signin = gui.locateCenterOnScreen("signin.png")
+#     if(gui.locateCenterOnScreen == None): return
+
+#     gui.click(signin[0],signin[1])
+
+# def click_button(image):
+#     pass
+
 
 def parse_to_courselist(path, courselist):
     '''Takes path to json file, returns list of Meeting objects'''
